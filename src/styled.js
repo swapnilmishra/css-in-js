@@ -24,8 +24,8 @@ function createStyleSheet(css) {
   const cssStr = css.join("");
   const hashSum = hash(cssStr);
   let classname = null;
+  classname = `css-${hashSum}`;
   if (!stylesCache.has(hashSum)) {
-    classname = `css-${hashSum}`;
     const compiledCSS = stylis(`.${classname} `, cssStr);
     addStylesheetRules(compiledCSS);
     stylesCache.set(hashSum, compiledCSS);
