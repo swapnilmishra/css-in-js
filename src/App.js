@@ -7,11 +7,18 @@ const Button = styled.button`
   color: white;
 `;
 
+const Input = styled.input`
+  padding: 10px 20px;
+  color: white;
+  background-color: black;
+`;
+
 export default function App() {
   return (
     <div>
       <div>A div that need to be styled</div>
       <Button disabled>This is styled button</Button>
+      <Input type="text" />
     </div>
   );
 }
