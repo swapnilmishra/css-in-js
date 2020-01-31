@@ -3,9 +3,9 @@ import stylis from "stylis";
 import hash from "hash-sum";
 
 const styled = {};
-
 let styleEl = null;
 let stylesCache = new Map();
+const tags = ["button", "input"];
 
 function createStyleElement() {
   styleEl = document.createElement("style");
@@ -20,8 +20,8 @@ function addStylesheetRules(rule) {
   styleSheet.insertRule(rule, styleSheet.cssRules.length);
 }
 
-function createStyleSheet(css) {
-  const cssStr = css.join("");
+function createStyleSheet(css, restProp, propFn) {
+  const cssStr = preProcessCss(css, propFn, restProp).join("");
   const hashSum = hash(cssStr);
   let classname = null;
   classname = `css-${hashSum}`;
@@ -33,20 +33,26 @@ function createStyleSheet(css) {
   return classname;
 }
 
-const tags = ["button", "input"];
-buildForTags();
+function preProcessCss(css, propFn, props) {
+  const cssFromPropFn = propFn.map(rule => {
+    if (typeof rule === "function") {
+      return rule(props);
+    } else {
+      return rule;
+    }
+  });
 
-function buildForTags() {
-  tags.forEach(tag => {
-    styled[tag] = css => {
-      const classname = createStyleSheet(css);
-      return styleIt({ tag, className: classname });
-    };
+  return css.map(rule => {
+    if (rule.trim() === ";") {
+      return cssFromPropFn.pop() + ";";
+    }
+    return rule;
   });
 }
 
-function styleIt({ tag, className: classname }) {
+function styleIt({ tag, css, propFn }) {
   return ({ children, ...restProps }) => {
+    const classname = createStyleSheet(css, restProps, propFn);
     return React.createElement(
       tag,
       { ...restProps, className: classname },
@@ -54,5 +60,15 @@ function styleIt({ tag, className: classname }) {
     );
   };
 }
+
+function buildForTags() {
+  tags.forEach(tag => {
+    styled[tag] = (css, ...propFn) => {
+      return styleIt({ tag, css, propFn });
+    };
+  });
+}
+
+buildForTags();
 
 export default styled;

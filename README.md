@@ -9,5 +9,6 @@ External dependencies used:
 
 TODO
 
+- [x] Support `props`
 - [ ] Typescript integration
 - [ ] A bit of writeup
