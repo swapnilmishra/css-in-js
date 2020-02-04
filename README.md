@@ -10,13 +10,14 @@ External dependencies used:
 TODO
 
 - [x] Support `props` e.g.
+
 ```js
 const Input = styled.input`
   padding: 10px 20px;
   color: white;
   background-color: ${props => (props.primary ? "red" : "palevioletred")};
 `;
-
 ```
-- [ ] Typescript integration
+
+- [ ] `extend` function to extend a component
 - [ ] A bit of writeup

@@ -21,7 +21,7 @@ function addStylesheetRules(rule) {
 }
 
 function createStyleSheet(css, restProp, propFn) {
-  const cssStr = preProcessCss(css, propFn, restProp).join("");
+  const cssStr = preProcessCss(css, restProp, propFn).join("");
   const hashSum = hash(cssStr);
   let classname = null;
   classname = `css-${hashSum}`;
@@ -33,13 +33,33 @@ function createStyleSheet(css, restProp, propFn) {
   return classname;
 }
 
-function preProcessCss(css, propFn, props) {
+const toDashedCase = str =>
+  str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`);
+
+const fromObjectToCss = cssObj => {
+  const cssArr = [];
+  Object.keys(cssObj).forEach(key => {
+    cssArr.push(`${toDashedCase(key)}:${cssObj[key]};`);
+  });
+
+  return cssArr;
+};
+
+function preProcessCss(css, props, propFn) {
   const cssFromPropFn = propFn.map(rule => {
     if (typeof rule === "function") {
-      return rule(props);
-    } else {
-      return rule;
+      const cssAfterFn = rule(props);
+      // if rule function returns object
+      /* e.g {
+          backgroundColor : white
+      }
+      */
+      if (typeof cssAfterFn === "object") {
+        css = css.concat(fromObjectToCss(cssAfterFn));
+      }
+      return cssAfterFn;
     }
+    return rule;
   });
 
   return css.map(rule => {
