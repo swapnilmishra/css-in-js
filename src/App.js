@@ -9,17 +9,19 @@ const Button = styled.button`
 `;
 
 const prColor = "white";
+const secondaryColor = "red";
+const padding = "10px 20px";
 
 const AnotherButton = styled.button`
-  background-color: blue;
-  padding: 10px 20px;
+  background-color: ${secondaryColor};
+  padding: ${padding};
   color: ${prColor};
 `;
 
 const Input = styled.input`
   padding: 10px 20px;
-  color: white;
   background-color: ${props => (props.primary ? "red" : "palevioletred")};
+  color: white;
 `;
 
 export default function App() {

@@ -20,19 +20,6 @@ function addStylesheetRules(rule) {
   styleSheet.insertRule(rule, styleSheet.cssRules.length);
 }
 
-function createStyleSheet(css, restProp, propFn) {
-  const cssStr = preProcessCss(css, restProp, propFn).join("");
-  const hashSum = hash(cssStr);
-  let classname = null;
-  classname = `css-${hashSum}`;
-  if (!stylesCache.has(hashSum)) {
-    const compiledCSS = stylis(`.${classname} `, cssStr);
-    addStylesheetRules(compiledCSS);
-    stylesCache.set(hashSum, compiledCSS);
-  }
-  return classname;
-}
-
 const toDashedCase = str =>
   str.replace(/([A-Z])/g, g => `-${g[0].toLowerCase()}`);
 
@@ -46,7 +33,7 @@ const fromObjectToCss = cssObj => {
 };
 
 function preProcessCss(css, props, propFn) {
-  const cssFromPropFn = propFn.map(rule => {
+  const cssFromPropFnMapping = propFn.map(rule => {
     if (typeof rule === "function") {
       const cssAfterFn = rule(props);
       // if rule function returns object
@@ -62,12 +49,32 @@ function preProcessCss(css, props, propFn) {
     return rule;
   });
 
-  return css.map(rule => {
-    if (rule.trim() === ";") {
-      return cssFromPropFn.pop() + ";";
+  const allCss = css.map(rule => {
+    const [k, v] = rule.split(":");
+    if (rule.trim() === ";" && cssFromPropFnMapping.length > 0) {
+      return `${cssFromPropFnMapping.shift()};`;
+    }
+
+    if (v && v.trim() === "" && cssFromPropFnMapping.length > 0) {
+      return `${k}:${cssFromPropFnMapping.shift()}`;
     }
     return rule;
   });
+
+  return allCss;
+}
+
+function createStyleSheet(css, props, propFn) {
+  const cssStr = preProcessCss(css, props, propFn).join("");
+  const hashSum = hash(cssStr);
+  let classname = null;
+  classname = `css-${hashSum}`;
+  if (!stylesCache.has(hashSum)) {
+    const compiledCSS = stylis(`.${classname} `, cssStr);
+    addStylesheetRules(compiledCSS);
+    stylesCache.set(hashSum, compiledCSS);
+  }
+  return classname;
 }
 
 function styleIt({ tag, css, propFn }) {
