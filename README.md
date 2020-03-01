@@ -7,17 +7,37 @@ External dependencies used:
 - [hash-sum](https://www.npmjs.com/package/hash-sum)
 - [stylis](https://www.npmjs.com/package/stylis)
 
-TODO
+#### Usage with variables
 
-- [x] Support `props` e.g.
+```js
+const Button = styled.button`
+  background-color: blue;
+  padding: 10px 20px;
+  ${color}
+`;
+```
+
+#### Usage with `styled-system`
+
+```js
+const Button = styled.button`
+  background-color: blue;
+  padding: 10px 20px;
+  ${color}
+`;
+```
+
+#### Usage with custom function which returns CSS
 
 ```js
 const Input = styled.input`
   padding: 10px 20px;
-  color: white;
   background-color: ${props => (props.primary ? "red" : "palevioletred")};
+  color: white;
 `;
 ```
+
+### TODO
 
 - [ ] `extend` function to extend a component
 - [ ] A bit of writeup
