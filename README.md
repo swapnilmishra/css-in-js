@@ -10,10 +10,14 @@ External dependencies used:
 #### Usage with variables
 
 ```js
-const Button = styled.button`
-  background-color: blue;
-  padding: 10px 20px;
-  ${color}
+const prColor = "white";
+const secondaryColor = "red";
+const padding = "10px 20px";
+
+const AnotherButton = styled.button`
+  background-color: ${secondaryColor};
+  padding: ${padding};
+  color: ${prColor};
 `;
 ```
 
