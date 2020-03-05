@@ -25,6 +25,11 @@ const Input = styled.input`
   color: white;
 `;
 
+const AnotherInput = styled(Input)`
+  background-color: yellow;
+  color: green;
+`;
+
 const divCls = css`
   background-color: ${bgColor};
   width: 50px;
@@ -41,6 +46,7 @@ export default function App(props) {
       </Button>
       <AnotherButton disabled>This is another styled button</AnotherButton>
       <Input type="text" primary />
+      <AnotherInput placeholder="Another input" />
       <div className={divCls}>Content</div>
       <div
         className={css`

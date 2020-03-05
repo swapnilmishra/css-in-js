@@ -3,9 +3,9 @@ import stylis from "stylis";
 import hash from "hash-sum";
 import tags from "./tags";
 
-const styled = {};
 let styleEl = null;
 let stylesCache = new Map();
+let classCache = new Map();
 
 function createStyleElement() {
   styleEl = document.createElement("style");
@@ -59,8 +59,7 @@ function preProcessCss({ css, props = {}, propFn }) {
   return allCss;
 }
 
-function createStyleSheet({ css, props, propFn }) {
-  const cssStr = preProcessCss({ css, props, propFn }).join("");
+function createStyleSheet({ cssStr }) {
   const hashSum = hash(cssStr);
   let classname = null;
   classname = `css-${hashSum}`;
@@ -68,31 +67,52 @@ function createStyleSheet({ css, props, propFn }) {
     const compiledCSS = stylis(`.${classname} `, cssStr);
     addStylesheetRules(compiledCSS);
     stylesCache.set(hashSum, compiledCSS);
+    classCache.set(classname, cssStr);
   }
   return classname;
 }
 
-function styleIt({ tag, css, propFn }) {
+function applyStyles({ tag, css, propFn }) {
   return ({ children, ...restProps }) => {
-    const classname = createStyleSheet({ css, props: restProps, propFn });
+    const { className, ...otherProps } = restProps;
+    const cssStr = preProcessCss({ css, otherProps, propFn }).join("");
+    let cls = createStyleSheet({ cssStr });
+    if (className) {
+      const combinedCls = `${classCache.get(cls)} ${classCache.get(className)}`;
+      cls = createStyleSheet({ cssStr: combinedCls.replace(/\n/gi, "") });
+    }
     return React.createElement(
       tag,
-      { ...restProps, className: classname },
+      {
+        ...otherProps,
+        className: cls
+      },
       children
     );
   };
 }
 
+const styled = reactElement => {
+  return (css, ...propFn) => {
+    const cssStr = preProcessCss({ css, propFn }).join("");
+    const cls = createStyleSheet({ cssStr, propFn });
+    return ({ children, ...restProps }) => {
+      return reactElement({ children, className: cls, ...restProps });
+    };
+  };
+};
+
 function buildForTags() {
   tags.forEach(tag => {
     styled[tag] = (css, ...propFn) => {
-      return styleIt({ tag, css, propFn });
+      return applyStyles({ tag, css, propFn });
     };
   });
 }
 
 export function css(css, ...propFn) {
-  const classname = createStyleSheet({ css, propFn });
+  const cssStr = preProcessCss({ css, propFn }).join("");
+  const classname = createStyleSheet({ cssStr, propFn });
   return classname;
 }
 
