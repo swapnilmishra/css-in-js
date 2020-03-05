@@ -1,11 +1,11 @@
 import React from "react";
 import stylis from "stylis";
 import hash from "hash-sum";
+import tags from "./tags";
 
 const styled = {};
 let styleEl = null;
 let stylesCache = new Map();
-const tags = ["button", "input"];
 
 function createStyleElement() {
   styleEl = document.createElement("style");
