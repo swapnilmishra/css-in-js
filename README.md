@@ -87,5 +87,5 @@ import { css } from "lib/styled";
 
 ### TODO
 
-- [ ] `extend` function to extend a component
+- [x] `extend` function to extend a component
 - [ ] A bit of writeup
