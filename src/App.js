@@ -1,16 +1,17 @@
 import React from "react";
-import styled from "./styled";
+import styled, { css } from "./lib/styled";
 import { color } from "styled-system";
 
 const Button = styled.button`
-  background-color: blue;
+  background-color: yellow;
   padding: 10px 20px;
   ${color}
 `;
 
 const prColor = "white";
-const secondaryColor = "red";
+const secondaryColor = "green";
 const padding = "10px 20px";
+const bgColor = "black";
 
 const AnotherButton = styled.button`
   background-color: ${secondaryColor};
@@ -20,11 +21,18 @@ const AnotherButton = styled.button`
 
 const Input = styled.input`
   padding: 10px 20px;
-  background-color: ${props => (props.primary ? "red" : "palevioletred")};
+  background-color: ${props => (props.primary ? "gray" : "palevioletred")};
   color: white;
 `;
 
-export default function App() {
+const divCls = css`
+  background-color: ${bgColor};
+  width: 50px;
+  height: 50px;
+  color: white;
+`;
+
+export default function App(props) {
   return (
     <div>
       <div>A div that need to be styled</div>
@@ -32,7 +40,18 @@ export default function App() {
         This is styled button
       </Button>
       <AnotherButton disabled>This is another styled button</AnotherButton>
-      <Input type="text" />
+      <Input type="text" primary />
+      <div className={divCls}>Content</div>
+      <div
+        className={css`
+          background-color: ${props.bgColor};
+          width: 50px;
+          height: 50px;
+          color: white;
+        `}
+      >
+        Content
+      </div>
     </div>
   );
 }

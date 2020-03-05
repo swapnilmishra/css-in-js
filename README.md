@@ -37,6 +37,35 @@ const Input = styled.input`
 `;
 ```
 
+#### Usage with className property
+
+```js
+const bgColor = "black";
+const containerCls = css`
+  background-color: ${bgColor};
+  width: 50px;
+  height: 50px;
+  color: white;
+`;
+```
+
+```html
+<div className="{containerCls}">Content</div>
+```
+
+or with props
+
+```jsx
+<div
+  className={css`
+    background-color: ${props.bgColor};
+    width: 50px;
+    height: 50px;
+    color: white;
+  `}
+>
+```
+
 ### TODO
 
 - [ ] `extend` function to extend a component

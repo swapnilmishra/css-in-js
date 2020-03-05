@@ -32,7 +32,7 @@ const fromObjectToCss = cssObj => {
   return cssArr;
 };
 
-function preProcessCss(css, props, propFn) {
+function preProcessCss({ css, props = {}, propFn }) {
   const cssFromPropFnMapping = propFn.map(rule => {
     if (typeof rule === "function") {
       const cssAfterFn = rule(props);
@@ -50,13 +50,8 @@ function preProcessCss(css, props, propFn) {
   });
 
   const allCss = css.map(rule => {
-    const [k, v] = rule.split(":");
-    if (rule.trim() === ";" && cssFromPropFnMapping.length > 0) {
-      return `${cssFromPropFnMapping.shift()};`;
-    }
-
-    if (v && v.trim() === "" && cssFromPropFnMapping.length > 0) {
-      return `${k}:${cssFromPropFnMapping.shift()}`;
+    if (cssFromPropFnMapping.length > 0) {
+      return `${rule}${cssFromPropFnMapping.shift()}`;
     }
     return rule;
   });
@@ -64,8 +59,8 @@ function preProcessCss(css, props, propFn) {
   return allCss;
 }
 
-function createStyleSheet(css, props, propFn) {
-  const cssStr = preProcessCss(css, props, propFn).join("");
+function createStyleSheet({ css, props, propFn }) {
+  const cssStr = preProcessCss({ css, props, propFn }).join("");
   const hashSum = hash(cssStr);
   let classname = null;
   classname = `css-${hashSum}`;
@@ -79,7 +74,7 @@ function createStyleSheet(css, props, propFn) {
 
 function styleIt({ tag, css, propFn }) {
   return ({ children, ...restProps }) => {
-    const classname = createStyleSheet(css, restProps, propFn);
+    const classname = createStyleSheet({ css, props: restProps, propFn });
     return React.createElement(
       tag,
       { ...restProps, className: classname },
@@ -94,6 +89,11 @@ function buildForTags() {
       return styleIt({ tag, css, propFn });
     };
   });
+}
+
+export function css(css, ...propFn) {
+  const classname = createStyleSheet({ css, propFn });
+  return classname;
 }
 
 buildForTags();
