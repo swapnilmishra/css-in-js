@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { css } from "./lib/styled";
+import styled, { css } from "simple-css-in-js";
 import { color } from "styled-system";
 
 const Button = styled.button`

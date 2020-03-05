@@ -1,0 +1,10 @@
+{
+  "name": "simple-css-in-js",
+  "version": "1.0.0",
+  "main": "styled.js",
+  "dependencies": {
+    "hash-sum": "^2.0.0",
+    "react": "^16.13.0",
+    "stylis": "^3.5.4"
+  }
+}
