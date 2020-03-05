@@ -1,6 +1,6 @@
 Attempt at creating a simple `css-in-js` lib
 
-See filename `src/styled.js` for the implementation and `src/App.js` for an example usage.
+See filename [src/lib/styled.js](https://github.com/swapnilmishra/css-in-js/blob/master/src/lib/styled.js) for the implementation and [src/App.js](https://github.com/swapnilmishra/css-in-js/blob/master/src/App.js) for an example usage.
 
 External dependencies used:
 
@@ -102,5 +102,4 @@ const AnotherInput = styled(Input)`
 
 ### TODO
 
-- [ ] `extend` function to extend a component
 - [ ] A bit of writeup
