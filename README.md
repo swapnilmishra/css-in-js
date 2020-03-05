@@ -10,40 +10,55 @@ External dependencies used:
 #### Usage with variables
 
 ```js
-const prColor = "white";
+import styled from "lib/styled";
+
+const primaryColor = "white";
 const secondaryColor = "red";
 const padding = "10px 20px";
 
 const AnotherButton = styled.button`
   background-color: ${secondaryColor};
   padding: ${padding};
-  color: ${prColor};
+  color: ${primaryColor};
 `;
 ```
 
 #### Usage with `styled-system`
 
 ```js
+import styled from "lib/styled";
+import { color } from "styled-system";
+
 const Button = styled.button`
   background-color: blue;
   padding: 10px 20px;
   ${color}
 `;
+
+<Button color="red" disabled>
+  This is styled button
+</Button>;
 ```
 
 #### Usage with custom function which returns CSS
 
 ```js
+import styled from "lib/styled";
+
 const Input = styled.input`
   padding: 10px 20px;
   background-color: ${props => (props.primary ? "red" : "palevioletred")};
   color: white;
 `;
+
+<Input type="text" primary />;
 ```
 
 #### Usage with className property
 
 ```js
+import { css } from "lib/styled";
+
 const bgColor = "black";
 const containerCls = css`
   background-color: ${bgColor};
@@ -51,15 +66,15 @@ const containerCls = css`
   height: 50px;
   color: white;
 `;
+
+<div className="{containerCls}">Content</div>;
 ```
 
-```html
-<div className="{containerCls}">Content</div>
-```
-
-or with props
+or
 
 ```jsx
+import { css } from "lib/styled";
+
 <div
   className={css`
     background-color: ${props.bgColor};

@@ -8,7 +8,7 @@ const Button = styled.button`
   ${color}
 `;
 
-const prColor = "white";
+const primaryColor = "white";
 const secondaryColor = "green";
 const padding = "10px 20px";
 const bgColor = "black";
@@ -16,7 +16,7 @@ const bgColor = "black";
 const AnotherButton = styled.button`
   background-color: ${secondaryColor};
   padding: ${padding};
-  color: ${prColor};
+  color: ${primaryColor};
 `;
 
 const Input = styled.input`
