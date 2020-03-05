@@ -85,6 +85,21 @@ import { css } from "lib/styled";
 >
 ```
 
+#### Extending components
+
+```js
+const Input = styled.input`
+  padding: 10px 20px;
+  background-color: ${props => (props.primary ? "gray" : "palevioletred")};
+  color: white;
+`;
+
+const AnotherInput = styled(Input)`
+  background-color: yellow;
+  color: green;
+`;
+```
+
 ### TODO
 
 - [ ] `extend` function to extend a component
