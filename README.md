@@ -1,6 +1,6 @@
 Attempt at creating a simple `css-in-js` lib
 
-See filename [lib/styled.js](https://github.com/swapnilmishra/css-in-js/blob/master/src/lib/styled.js) for the implementation and [example/src/App.js](https://github.com/swapnilmishra/css-in-js/blob/master/src/App.js) for an example usage.
+See filename [lib/styled.js](https://github.com/swapnilmishra/css-in-js/blob/master/lib/styled.js) for the implementation and [example/src/App.js](https://github.com/swapnilmishra/css-in-js/blob/master/example/src/App.js) for an example usage.
 
 External dependencies used:
 
